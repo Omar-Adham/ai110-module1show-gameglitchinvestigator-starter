@@ -18,11 +18,11 @@ def parse_guess(raw: str):
     if raw == "":
         return False, None, "Enter a guess."
 
+    if "." in raw:
+        return False, None, "Please enter a whole number, not a decimal."
+
     try:
-        if "." in raw:
-            value = int(float(raw))
-        else:
-            value = int(raw)
+        value = int(raw)
     except Exception:
         return False, None, "That is not a number."
 
@@ -43,8 +43,8 @@ def check_guess(guess, secret):
         if g == secret:
             return "Win", "🎉 Correct!"
         if g > secret:
-            return "Too High", "📈 Go HIGHER!"
-        return "Too Low", "📉 Go LOWER!"
+            return "Too High", "📉 Go LOWER!"
+        return "Too Low", "📈 Go HIGHER!"
 
 
 def update_score(current_score: int, outcome: str, attempt_number: int):
@@ -78,7 +78,7 @@ difficulty = st.sidebar.selectbox(
 attempt_limit_map = {
     "Easy": 6,
     "Normal": 8,
-    "Hard": 5,
+    "Hard": 10,
 }
 attempt_limit = attempt_limit_map[difficulty]
 
@@ -97,6 +97,7 @@ if st.session_state.difficulty != difficulty:
     st.session_state.score = 0
     st.session_state.status = "playing"
     st.session_state.history = []
+    st.session_state.new_game_message = True
 
 if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
@@ -115,9 +116,14 @@ if "history" not in st.session_state:
 
 st.subheader("Make a guess")
 
+if st.session_state.get("new_game_message"):
+    st.success("New game started.")
+    st.session_state.new_game_message = False
+
 st.info(
     f"Guess a number between {low} and {high}. "
-    f"Attempts left: {attempt_limit - st.session_state.attempts}"
+    f"Attempts left: {attempt_limit - st.session_state.attempts} | "
+    f"Score: {st.session_state.score}"
 )
 
 with st.expander("Developer Debug Info"):
@@ -127,18 +133,7 @@ with st.expander("Developer Debug Info"):
     st.write("Difficulty:", difficulty)
     st.write("History:", st.session_state.history)
 
-raw_guess = st.text_input(
-    "Enter your guess:",
-    key=f"guess_input_{difficulty}"
-)
-
-col1, col2, col3 = st.columns(3)
-with col1:
-    submit = st.button("Submit Guess 🚀")
-with col2:
-    new_game = st.button("New Game 🔁")
-with col3:
-    show_hint = st.checkbox("Show hint", value=True)
+new_game = st.button("New Game 🔁")
 
 if new_game:
     st.session_state.attempts = 0
@@ -146,7 +141,7 @@ if new_game:
     st.session_state.status = "playing"
     st.session_state.history = []
     st.session_state.score = 0
-    st.success("New game started.")
+    st.session_state.new_game_message = True
     st.rerun()
 
 if st.session_state.status != "playing":
@@ -157,12 +152,30 @@ if st.session_state.status != "playing":
         st.error(f"Out of attempts! The secret was {st.session_state.secret}. Score: {st.session_state.score}")
     st.stop()
 
+with st.form("guess_form"):
+    raw_guess = st.text_input(
+        "Enter your guess:",
+        key=f"guess_input_{difficulty}"
+    )
+    col1, col2 = st.columns(2)
+    with col1:
+        submit = st.form_submit_button("Submit Guess 🚀")
+    with col2:
+        show_hint = st.checkbox("Show hint", value=True)
+
 if submit:
     ok, guess_int, err = parse_guess(raw_guess)
 
     if not ok:
-        st.session_state.history.append(raw_guess)
         st.error(err)
+    elif guess_int < low or guess_int > high:
+        st.error(f"Please enter a number between {low} and {high}.")
+    elif guess_int in st.session_state.history:
+        st.session_state.attempts += 1
+        st.error(f"You already guessed {guess_int}! Attempt wasted.")
+        if st.session_state.attempts >= attempt_limit:
+            st.session_state.status = "lost"
+            st.rerun()
     else:
         st.session_state.attempts += 1
         st.session_state.history.append(guess_int)
