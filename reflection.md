@@ -26,18 +26,16 @@ Actual: Some invalid inputs (like decimals or unexpected values) could cause iss
 
 ## 2. How did you use AI as a teammate?
 
-- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
-- Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
-- Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
+One correct suggestion the AI gave me was to move the core game logic out of app.py and into logic_utils.py. It suggested separating functions like parse_guess() and check_guess() from the Streamlit UI so the code would be easier to test and debug. This suggestion was correct because it made the project cleaner and helped me write a pytest test for the logic directly. I verified it by running the game and confirming that the app still worked after importing the functions from logic_utils.py.
 
+One incorrect or misleading suggestion the AI gave me was assuming the bug was mainly about decimal guesses and attempt counting before fully focusing on the original project instructions. That suggestion was not completely wrong, but it was misleading because the main required bug in the assignment was the changing secret number and the incorrect higher/lower hint behavior. I verified what actually mattered by reading the README, checking the reflection instructions, and testing the game directly to see which bugs matched the assignment goals.
 ---
 
 ## 3. Debugging and testing your fixes
 
-- How did you decide whether a bug was really fixed?
-- Describe at least one test you ran (manual or using pytest)  
-  and what it showed you about your code.
-- Did AI help you design or understand any tests? How?
+I verified my fixes in two ways. First, I tested the game manually by running streamlit run app.py and checking whether the game behaved correctly during play. I made sure the hints now matched the guesses and that the game logic worked normally.
+
+Second, I added an automated pytest test in test/test_game_logic.py to verify the guess-checking logic. For example, I tested that a guess of 60 against a secret number of 50 returns "lower". After that, I ran python -m pytest and confirmed that the test passed. This helped me verify that the fix worked both in the code and in the live game.
 
 ---
 

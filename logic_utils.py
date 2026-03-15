@@ -15,8 +15,9 @@ def parse_guess(raw: str):
 
     try:
         # only accept whole numbers
-        if "." in raw:
-            return None
+        if "." in raw:  
+            return None     # FIX: Rejected decimal guesses after reviewing AI suggestion and simplifying the validation logic
+
 
         return int(raw)
     except ValueError:
@@ -25,7 +26,7 @@ def parse_guess(raw: str):
 
 def check_guess(secret: int, guess: int):
     if guess < secret:
-        return "higher"
+        return "higher"      # FIX: Corrected hint logic after using AI to review the comparison behavior
     elif guess > secret:
         return "lower"
     else:
