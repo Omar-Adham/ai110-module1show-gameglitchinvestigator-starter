@@ -25,13 +25,17 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 📝 Document Your Experience
 
-- [ ] Describe the game's purpose.
-- [ ] Detail which bugs you found.
-- [ ] Explain what fixes you applied.
+During this project I worked on debugging a number guessing game that had several glitches. The secret number was resetting every time the player submitted a guess because Streamlit reruns the entire script on interaction. I fixed this by using Streamlit session state so the secret number persists during the game.
+
+Another issue was incorrect hint logic where the game sometimes gave the wrong "Higher" or "Lower" feedback. I corrected the comparison logic in the guess-checking function and moved the core game logic into `logic_utils.py` to separate it from the UI.
+
+I also added automated testing using pytest. For example, I created a test to verify that if the secret number is 50 and the guess is 60, the function returns the correct hint ("lower"). Running `python -m pytest` confirmed that the test passed and that the logic works correctly.
 
 ## 📸 Demo
 
-- [ ] [Insert a screenshot of your fixed, winning game here]
+![alt text](image.png)
+![alt text](image-1.png)
+
 
 ## 🚀 Stretch Features
 
