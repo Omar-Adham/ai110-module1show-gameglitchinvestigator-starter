@@ -40,16 +40,19 @@ Second, I added an automated pytest test in test/test_game_logic.py to verify th
 ---
 
 ## 4. What did you learn about Streamlit and state?
+The secret number kept changing in the original app because Streamlit reruns the entire script every time the user interacts with the interface. Since the secret number was generated directly in the script, it was recreated on every rerun. This caused the game to change the answer every time the player submitted a guess.
 
-- In your own words, explain why the secret number kept changing in the original app.
-- How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
-- What change did you make that finally gave the game a stable secret number?
+Streamlit reruns mean that the whole Python script runs again whenever the user interacts with the app, like pressing a button or entering input. Session state allows the program to store values so they persist between these reruns. I would explain it to a friend as a way for Streamlit to "remember" important variables while the app keeps refreshing.
+
+The change that fixed the problem was storing the secret number inside Streamlit's session state instead of generating it every time the app ran. This allowed the game to keep the same secret number throughout a round until the player won or the game reset.
 
 ---
 
 ## 5. Looking ahead: your developer habits
 
-- What is one habit or strategy from this project that you want to reuse in future labs or projects?
-  - This could be a testing habit, a prompting strategy, or a way you used Git.
-- What is one thing you would do differently next time you work with AI on a coding task?
-- In one or two sentences, describe how this project changed the way you think about AI generated code.
+One habit I want to reuse in future projects is writing small tests to verify that functions behave correctly. Using pytest helped me confirm that the game logic worked as expected and made debugging easier.
+
+Next time I work with AI on a coding task, I would verify the suggestions earlier by testing the code and comparing it with the project instructions. This would help me avoid following suggestions that are not directly related to the main problem.
+
+This project changed the way I think about AI-generated code because I realized that AI suggestions should always be reviewed and tested carefully. AI can help with ideas and debugging, but the developer still needs to understand the code and verify that the solution actually solves the problem.
+After you paste these
