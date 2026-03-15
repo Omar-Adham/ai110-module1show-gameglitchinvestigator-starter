@@ -11,3 +11,11 @@ def test_guess_too_high():
     guess = 60
     result = check_guess(secret, guess)
     assert result == "lower"
+
+
+
+def test_guess_too_low():
+    secret = 50
+    guess = 40
+    result = check_guess(secret, guess)
+    assert result == "higher"
