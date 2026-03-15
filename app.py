@@ -20,7 +20,7 @@ def parse_guess(raw: str):
 
     try:
         if "." in raw:
-            value = int(float(raw))
+            value = int(float(raw)) # FIXME: Decimal guesses should not be allowed in a whole-number guessing game
         else:
             value = int(raw)
     except Exception:
@@ -148,7 +148,7 @@ if st.session_state.status != "playing":
     st.stop()
 
 if submit:
-    st.session_state.attempts += 1
+    st.session_state.attempts += 1      # FIXME: Attempts increase even when the guess is invalid
 
     ok, guess_int, err = parse_guess(raw_guess)
 

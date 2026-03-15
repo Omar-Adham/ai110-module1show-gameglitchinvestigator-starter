@@ -4,9 +4,23 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 
 ## 1. What was broken when you started?
 
-- What did the game look like the first time you ran it?
-- List at least two concrete bugs you noticed at the start  
-  (for example: "the secret number kept changing" or "the hints were backwards").
+Bug 1: The secret number kept changing
+
+Expected: The secret number should stay the same while the player keeps guessing until they either win or run out of attempts.
+
+Actual: Every time I clicked Submit, the app reran and a new secret number was generated. This made it almost impossible to win because the answer kept changing.
+
+Bug 2: The higher/lower hints were wrong
+
+Expected: If my guess was smaller than the secret number, the game should say “Higher”, and if it was bigger it should say “Lower.”
+
+Actual: Sometimes the hint given was incorrect, which made the game confusing and misleading.
+
+Bug 3: The game didn’t properly handle invalid input
+
+Expected: The game should only accept valid numbers from the player.
+
+Actual: Some invalid inputs (like decimals or unexpected values) could cause issues or behave strangely.
 
 ---
 
